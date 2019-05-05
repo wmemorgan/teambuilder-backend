@@ -2,7 +2,7 @@ const express = require('express')
 const serverless = require('serverless-http')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const uuid = require('uuid')
+const uuidv4 = require('uuid/v4')
 
 const app = express()
 const router = express.Router()
@@ -28,7 +28,7 @@ const sendUserError = (msg, res) => {
 //   }
 // }
 
-const projects = [
+let projects = [
   {
     id: 1,
     name: 'Team Builder App',
@@ -131,7 +131,7 @@ const projects = [
   }
 ]
 
-const roles = [
+let roles = [
   {
     id: 1,
     name: 'Web UI Developer'
@@ -154,7 +154,7 @@ const roles = [
   },
 ]
 
-const categories = [
+let categories = [
   {
     id: 1,
     name: 'Productivity'
@@ -181,7 +181,7 @@ const categories = [
   }
 ]
 
-const users = [
+let users = [
   {
     id: 1,
     firstName: 'Gordon',
@@ -226,7 +226,7 @@ router.get(`/projects`, (req, res) => {
 })
 
 router.get(`/projects/:id`, (req, res) => {
-  const project = projects.find(project => project.id === req.params.id)
+  let project = projects.find(project => project.id === req.params.id)
 
   if (project) {
     res.status(200).json(project)
@@ -235,13 +235,15 @@ router.get(`/projects/:id`, (req, res) => {
   }
 })
 
-router.post(``, (req, res) => {
-  let lastIndex = projects.length - 1
-  const project = { id: uuid.v4(), ...req.body}
+router.post(`/projects`, (req, res) => {
+  // Create new project record
+  let project = { id: uuidv4(), ...req.body}
   console.log(`New project created: `, project)
-  
+  // Add new project to existing projet list
   projects = [...projects, project]
-
+  console.log(`updated project list: `, projects)
+  // Send updated list 
+  res.send(projects)
 
 })
 
@@ -258,7 +260,7 @@ router.get(`/users`, (req, res) => {
 })
 
 router.get(`/users/:id`, (req, res) => {
-  const user = users.find(user => user.id === req.params.id)
+  let user = users.find(user => user.id === req.params.id)
 
   if (user) {
     res.status(200).json(user)
