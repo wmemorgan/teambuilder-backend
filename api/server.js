@@ -2,7 +2,7 @@ const express = require('express')
 const serverless = require('serverless-http')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-// const uuid = require('uuid')
+const uuid = require('uuid')
 
 const app = express()
 const router = express.Router()
@@ -233,6 +233,16 @@ router.get(`/projects/:id`, (req, res) => {
   } else {
     res.status(404).send({msg: `Project not found`})
   }
+})
+
+router.post(``, (req, res) => {
+  let lastIndex = projects.length - 1
+  const project = { id: uuid.v4(), ...req.body}
+  console.log(`New project created: `, project)
+  
+  projects = [...projects, project]
+
+
 })
 
 router.get(`roles`, (req, res) => {
