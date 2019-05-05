@@ -23,7 +23,7 @@
     "npm-run-all": "^4.1.5"
   },
   "scripts": {
-    "start": "start-lambda",
+    "start": "yarn start:lambda",
     "start:lambda": "netlify-lambda serve api",
     "prod": "yarn build:lambda",
     "dev": "nodemon api/server.js",
