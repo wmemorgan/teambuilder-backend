@@ -288,13 +288,25 @@ router.get(`/users`, (req, res) => {
 })
 
 router.get(`/users/:id`, (req, res) => {
-  let user = users.find(user => user.id === req.params.id)
+  let user = users.find(user => user.id == req.params.id)
 
   if (user) {
     res.status(200).json(user)
   } else {
     res.status(404).send({ msg: `User not found` })
   }
+})
+
+router.post(`/users`, (req, res) => {
+  // Create new user record
+  let newUser = { id: uuidv4(), ...req.body }
+  console.log(`New user created: `, newUser)
+  // Add new user to existing user list
+  users = [...users, newUser]
+  console.log(`updated user list: `, users)
+  // Send updated list 
+  res.send(users)
+
 })
 
 app.use('/.netlify/functions/server/api', router)
