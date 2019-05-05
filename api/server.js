@@ -226,26 +226,54 @@ router.get(`/projects`, (req, res) => {
 })
 
 router.get(`/projects/:id`, (req, res) => {
-  let project = projects.find(project => project.id === req.params.id)
+  const { id } = req.params
+  console.log(`GET incoming ID: `, req.params.id)
+  const project = projects.find(p => p.id == id)
+  console.log(`GET Method /projects/:id `, project)
 
   if (project) {
     res.status(200).json(project)
   } else {
-    res.status(404).send({msg: `Project not found`})
+    console.log(`Project id is not there: `, project)
+    res.status(404).send({msg: `Project ${req.params.id} not found`})
   }
 })
 
 router.post(`/projects`, (req, res) => {
   // Create new project record
-  let project = { id: uuidv4(), ...req.body}
+  let newProject = { id: uuidv4(), ...req.body}
   console.log(`New project created: `, project)
   // Add new project to existing projet list
-  projects = [...projects, project]
+  projects = [...projects, newProject]
   console.log(`updated project list: `, projects)
   // Send updated list 
   res.send(projects)
 
 })
+
+router.put(`/projects/:id`, (req, res) => {
+  const { id } = req.params
+  console.log(`PUT method invoked id: `, id)
+  const project = projects.find(project => project.id == id)
+
+  if(project) {
+    const updatedProject = { ...project, ...req.body }
+    console.log(`updatedProject: `, updatedProject)
+    projects = [...projects.map(project => {
+      if (project.id === id) {
+        return updatedProject
+      } else {
+        return project
+      }
+    })]
+    res.send(projects)
+  } else {
+    res.status(404).send({ msg: `Project not found` })
+  }
+  // res.send(project)
+})
+
+
 
 router.get(`roles`, (req, res) => {
   res.json(roles)
