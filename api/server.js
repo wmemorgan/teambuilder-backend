@@ -257,7 +257,7 @@ router.put(`/projects/:id`, (req, res) => {
   console.log(`PUT method invoked id: `, id)
   const project = projects.find(project => project.id == id)
 
-  if(project) {
+  if (project) {
     const updatedProject = { ...project, ...req.body }
     console.log(`updatedProject: `, updatedProject)
     projects = [...projects.map(project => {
@@ -382,7 +382,55 @@ router.get(`/categories`, (req, res) => {
   res.json(categories)
 })
 
+router.get(`/categories/:id`, (req, res) => {
+  const { id } = req.params
+  console.log(`GET incoming ID: `, req.params.id)
+  const category = categories.find(p => p.id == id)
+  console.log(`GET Method /categories/:id `, category)
 
+  if (category) {
+    res.status(200).json(category)
+  } else {
+    console.log(`category id is not there: `, category)
+    res.status(404).send({ msg: `category ${req.params.id} not found` })
+  }
+})
+
+router.post(`/categories`, (req, res) => {
+  // Create new categorie record
+  let newCategory = { id: uuidv4(), ...req.body }
+  console.log(`New categorie created: `, newCategory)
+  // Add new categorie to existing projet list
+  categories = [...categories, newCategory]
+  console.log(`updated categories: `, categories)
+  // Send updated list 
+  res.send(categories)
+})
+
+router.put(`/categories/:id`, (req, res) => {
+  const { id } = req.params
+  console.log(`PUT method invoked id: `, id)
+  const category = categories.find(categorie => categorie.id == id)
+
+  if (category) {
+    const updatedCategory = { ...category, ...req.body }
+    console.log(`updatedCategory: `, updatedCategory)
+    categories = [...categories.map(category => {
+      if (category.id == id) {
+        return updatedCategory
+      } else {
+        return category
+      }
+    })]
+    console.log(`updated category list: `, categories)
+    res.send(categories)
+  } else {
+    res.status(404).send({ msg: `category ${id} not found` })
+  }
+})
+
+
+// Activate Netlify Lambda Middleware
 app.use('/.netlify/functions/server/api', router)
 
 module.exports = app
