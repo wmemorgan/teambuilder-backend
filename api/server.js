@@ -274,6 +274,15 @@ router.put(`/projects/:id`, (req, res) => {
   }
 })
 
+router.delete(`/projects/:id`, (req, res) => {
+  const { id } = req.params
+  console.log(`Submit delete request: `, id)
+  projects = projects.filter(p => p.id !== Number(id))
+
+  res.send(projects)
+
+})
+
 /*============= USER ROUTES ===============*/
 router.get(`/users`, (req, res) => {
   res.json(users)
