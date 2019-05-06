@@ -1,5 +1,7 @@
 ### API Documentation
 
+#### Endpoint
+https://teambuilderapp-api.netlify.com
 
 #### Project Routes
 
