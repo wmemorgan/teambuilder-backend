@@ -366,17 +366,16 @@ router.post(`/signup`, async (req, res) => {
 
 router.put(`/users/:id`, async (req, res) => {
   const { id } = req.params
-  const { firstName, lastName, email, password,
+  const { firstName, lastName, email,
     avatar, cohort, project_manager, preferred_role
   } = req.body
-  const hash = bcrypt.hashSync(password)
+  // const hash = bcrypt.hashSync(password)
   console.log(`PUT method invoked id: `, id)
 
   try {
-    await db.query(`UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4,
-        avatar = $5, cohort = $6, project_manager = $7, preferred_role = $8 WHERE id = $9`,
-      [firstName, lastName, email, hash,
-        avatar, cohort, project_manager, preferred_role, id]
+    await db.query(`UPDATE users SET first_name = $1, last_name = $2, email = $3,
+        avatar = $4, cohort = $5, project_manager = $6, preferred_role = $7 WHERE id = $8`,
+      [firstName, lastName, email, avatar, cohort, project_manager, preferred_role, id]
     )
     const { rows } = await db.query(`SELECT id, first_name, last_name, email,
         avatar, cohort, project_manager, preferred_role FROM users`)
