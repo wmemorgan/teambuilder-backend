@@ -238,34 +238,62 @@ router.post(`/projects`, async (req, res) => {
 
 })
 
-router.put(`/projects/:id`, (req, res) => {
+router.put(`/projects/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`PUT method invoked id: `, id)
-  const project = projects.find(project => project.id == id)
 
-  if (project) {
-    const updatedProject = { ...project, ...req.body }
-    console.log(`updatedProject: `, updatedProject)
-    projects = [...projects.map(project => {
-      if (project.id == payload.id) {
-        return payload
-      } else {
-        return project
-      }
-    })]
-    console.log(`updated Project List: `, projects)
-    res.send(projects)
-  } else {
-    res.status(404).send({ msg: `Project ${id} not found` })
+  try {
+    const { name, pitch, mvp, stretch, category, projectComplete } = req.body
+    await db.query(`UPDATE projects SET name = $1, pitch = $2, mvp = $3, stretch = $4, 
+      category = $5, projectComplete = $6 WHERE id = $7`,
+      [name, pitch, mvp, stretch, category, projectComplete, id]
+    )
+    const { rows } = await db.query(`SELECT * FROM projects`)
+    res.send(rows)
   }
+  catch (ex) {
+    console.log(`Database query failed ${ex}`)
+    res.send(ex)
+  }
+
+
+  // const project = projects.find(project => project.id == id)
+
+  // if (project) {
+  //   const updatedProject = { ...project, ...req.body }
+  //   console.log(`updatedProject: `, updatedProject)
+  //   projects = [...projects.map(project => {
+  //     if (project.id == payload.id) {
+  //       return payload
+  //     } else {
+  //       return project
+  //     }
+  //   })]
+  //   console.log(`updated Project List: `, projects)
+  //   res.send(projects)
+  // } else {
+  //   res.status(404).send({ msg: `Project ${id} not found` })
+  // }
 })
 
-router.delete(`/projects/:id`, (req, res) => {
+router.delete(`/projects/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`Submit delete request: `, id)
-  projects = projects.filter(p => p.id !== Number(id))
 
-  res.send(projects)
+  try {
+    const { rows } = await db.query(
+      'DELETE FROM projects WHERE id = $1', [id])
+    res.send(rows)
+  }
+  catch (ex) {
+    console.log(`Database query failed ${ex}`)
+    res.send(ex)
+  } 
+
+
+  // projects = projects.filter(p => p.id !== Number(id))
+
+  // res.send(projects)
 
 })
 
@@ -462,10 +490,13 @@ router.post(`/roles`, async (req, res) => {
 
 router.put(`/roles/:id`, async (req, res) => {
   const { id } = req.params
+  const { name, gradingRubric }
   console.log(`PUT method invoked id: `, id)
   try {
-
-    const { rows } = await db.query(`SELECT * FROM projects`)
+    await db.query(`UPDATE users SET name = $1, gradingRubric = $2 WHERE id = $3`,
+      [name, gradingRubric, id]
+    )
+    const { rows } = await db.query(`SELECT * FROM roles`)
     res.send(rows)
   }
   catch (ex) {
@@ -495,14 +526,16 @@ router.put(`/roles/:id`, async (req, res) => {
 router.delete(`/roles/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`Submit delete request: `, id)
+
   try {
-    const { rows } = await db.query(`SELECT * FROM projects`)
+    const { rows } = await db.query(
+      'DELETE FROM roles WHERE id = $1', [id])
     res.send(rows)
   }
   catch (ex) {
-    console.log(`Database query error ${ex}`)
+    console.log(`Database query failed ${ex}`)
     res.send(ex)
-  }
+  } 
 
   // roles = roles.filter(p => p.id !== Number(id))
 
@@ -556,31 +589,59 @@ router.post(`/categories`, async (req, res) => {
 router.put(`/categories/:id`, (req, res) => {
   const { id } = req.params
   console.log(`PUT method invoked id: `, id)
-  const category = categories.find(categorie => categorie.id == id)
 
-  if (category) {
-    const updatedCategory = { ...category, ...req.body }
-    console.log(`updatedCategory: `, updatedCategory)
-    categories = [...categories.map(category => {
-      if (category.id == id) {
-        return updatedCategory
-      } else {
-        return category
-      }
-    })]
-    console.log(`updated category list: `, categories)
-    res.send(categories)
-  } else {
-    res.status(404).send({ msg: `category ${id} not found` })
+  const { id } = req.params
+  const { name }
+  console.log(`PUT method invoked id: `, id)
+  try {
+    await db.query(`UPDATE categories SET name = $1 WHERE id = $2`,
+      [name, id]
+    )
+    const { rows } = await db.query(`SELECT * FROM categories`)
+    res.send(rows)
   }
+  catch (ex) {
+    console.log(`Database query error ${ex}`)
+    res.send(ex)
+  }
+
+
+  // const category = categories.find(categorie => categorie.id == id)
+
+  // if (category) {
+  //   const updatedCategory = { ...category, ...req.body }
+  //   console.log(`updatedCategory: `, updatedCategory)
+  //   categories = [...categories.map(category => {
+  //     if (category.id == id) {
+  //       return updatedCategory
+  //     } else {
+  //       return category
+  //     }
+  //   })]
+  //   console.log(`updated category list: `, categories)
+  //   res.send(categories)
+  // } else {
+  //   res.status(404).send({ msg: `category ${id} not found` })
+  // }
 })
 
-router.delete(`/categories/:id`, (req, res) => {
+router.delete(`/categories/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`Submit delete request: `, id)
-  categories = categories.filter(p => p.id !== Number(id))
 
-  res.send(categories)
+  try {
+    const { rows } = await db.query(
+      'DELETE FROM categories WHERE id = $1', [id])
+    res.send(rows)
+  }
+  catch (ex) {
+    console.log(`Database query failed ${ex}`)
+    res.send(ex)
+  } 
+
+  // categories = categories.filter(p => p.id !== Number(id))
+
+  // res.send(categories)
 
 })
 
