@@ -3,6 +3,7 @@ const express = require('express')
 const Router = require('express-promise-router')
 const serverless = require('serverless-http')
 const bodyParser = require('body-parser')
+const bcrypt = require('bcryptjs')
 const cors = require('cors')
 const uuidv4 = require('uuid/v4')
 
@@ -139,6 +140,7 @@ let users = [
     firstName: 'Gordon',
     lastName: 'Clark',
     email: 'Glark@gmail.com',
+    password: 'test',
     avatar: 'avatar.png',
     cohort: 'webpt04',
     project_manager: 'Carlos',
@@ -150,6 +152,7 @@ let users = [
     firstName: 'Donna',
     lastName: 'Emmerson',
     email: 'oopsididitagain@yahoo.com',
+    password: 'test',
     avatar: 'avatar.png',
     cohort: 'webpt04',
     role: 'frontend',
@@ -161,6 +164,7 @@ let users = [
     firstName: 'Elliot',
     lastName: 'Alderson',
     email: 'mrrobot@geocities.com',
+    password: 'test',
     avatar: 'elliot.jpg',
     cohort: 'webpt03',
     project_manager: 'Lola',
@@ -217,8 +221,6 @@ router.post(`/projects`, async (req, res) => {
     )
     const { rows } = await db.query(`SELECT * FROM projects`)
     res.send(rows)
-    // console.log(JSON.stringify(req.body))
-    // res.send(req.body)
   } 
   catch (ex) {
     console.log(`Database query failed ${ex}`)
@@ -268,61 +270,132 @@ router.delete(`/projects/:id`, (req, res) => {
 })
 
 /*============= USER ROUTES ===============*/
-router.get(`/users`, (req, res) => {
-  res.json(users)
-})
-
-router.get(`/users/:id`, (req, res) => {
-  const { id } = req.params
-  let user = users.find(user => user.id == id)
-
-  if (user) {
-    res.status(200).json(user)
-  } else {
-    res.status(404).send({ msg: `user ${id} not found` })
+router.get(`/users`, async (req, res) => {
+  try {
+    const { rows } = await db.query(`SELECT id, first_name, last_name, email,
+        avatar, cohort, project_manager, preferred_role FROM users`)
+    res.send(rows)
+  } catch (ex) {
+    console.log(`Database query failed ${ex}`)
+    res.send(ex)
   }
+
+  // res.json(users)
 })
 
-router.post(`/users`, (req, res) => {
-  // Create new user record
-  let newUser = { id: uuidv4(), ...req.body }
-  console.log(`New user created: `, newUser)
-  // Add new user to existing user list
-  users = [...users, newUser]
-  console.log(`updated user list: `, users)
-  // Send updated list 
-  res.send(users)
-
-})
-
-router.put(`/users/:id`, (req, res) => {
+router.get(`/users/:id`, async (req, res) => {
   const { id } = req.params
+  try {
+    const { rows } = await db.query(
+      'SELECT first_name, last_name, email, avatar, cohort, project_manager, preferred_role FROM users WHERE id = $1', [id])
+    res.send(rows)
+  }
+  catch (ex) {
+    console.log(`Database query failed ${ex}`)
+    res.send(ex)
+  }
+
+  // let user = users.find(user => user.id == id)
+
+  // if (user) {
+  //   res.status(200).json(user)
+  // } else {
+  //   res.status(404).send({ msg: `user ${id} not found` })
+  // }
+})
+
+router.post(`/register`, async (req, res) => {
+  const { firstName, lastName, email, password,
+    avatar, cohort, project_manager, preferred_role
+  } = req.body
+  const hash = bcrypt.hashSync(password)
+
+  try {
+    await db.query(`INSERT INTO users(first_name, last_name, email, password,
+        avatar, cohort, project_manager, preferred_role) VALUES($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [firstName, lastName, email, hash,
+        avatar, cohort, project_manager, preferred_role]
+    )
+    const { rows } = await db.query(`SELECT id, first_name, last_name, email,
+        avatar, cohort, project_manager, preferred_role FROM users`)
+    res.send(rows)
+  }
+  catch (ex) {
+    console.log(`Database query failed ${ex}`)
+    res.send(ex)
+  }
+
+  // // Create new user record
+  // let newUser = { id: uuidv4(), ...req.body }
+  // console.log(`New user created: `, newUser)
+  // // Add new user to existing user list
+  // users = [...users, newUser]
+  // console.log(`updated user list: `, users)
+  // // Send updated list 
+  // res.send(users)
+
+})
+
+router.put(`/users/:id`, async (req, res) => {
+  const { id } = req.params
+  const { firstName, lastName, email, password,
+    avatar, cohort, project_manager, preferred_role
+  } = req.body
+  const hash = bcrypt.hashSync(password)
   console.log(`PUT method invoked id: `, id)
-  const user = users.find(user => user.id == id)
 
-  if (user) {
-    const updatedUser = { ...user, ...req.body }
-    console.log(`updatedUser: `, updatedUser)
-    users = [...users.map(user => {
-      if (user.id == id) {
-        return updatedUser
-      } else {
-        return user
-      }
-    })]
-    console.log(`updated User List: `, users)
-    res.send(users)
-  } else {
-    res.status(404).send({ msg: `user ${id} not found` })
+  try {
+    await db.query(`UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4,
+        avatar = $5, cohort = $6, project_manager = $7, preferred_role = $8 WHERE id = $9`,
+      [firstName, lastName, email, hash,
+        avatar, cohort, project_manager, preferred_role, id]
+    )
+    const { rows } = await db.query(`SELECT id, first_name, last_name, email,
+        avatar, cohort, project_manager, preferred_role FROM users`)
+    res.send(rows)
   }
+  catch (ex) {
+    console.log(`Database query failed ${ex}`)
+    res.send(ex)
+  }
+
+  // const user = users.find(user => user.id == id)
+
+  // if (user) {
+  //   const updatedUser = { ...user, ...req.body }
+  //   console.log(`updatedUser: `, updatedUser)
+  //   users = [...users.map(user => {
+  //     if (user.id == id) {
+  //       return updatedUser
+  //     } else {
+  //       return user
+  //     }
+  //   })]
+  //   console.log(`updated User List: `, users)
+  //   res.send(users)
+  // } else {
+  //   res.status(404).send({ msg: `user ${id} not found` })
+  // }
 })
 
-router.delete(`/users/:id`, (req, res) => {
+router.delete(`/users/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`Submit delete request: `, id)
-  users = users.filter(p => p.id !== Number(id))
 
-  res.send(users)
+  try {
+    const { rows } = await db.query(
+      'DELETE FROM users WHERE id = $1', [id])
+    res.send(rows)
+  }
+  catch (ex) {
+    console.log(`Database query failed ${ex}`)
+    res.send(ex)
+  } 
+
+
+  // users = users.filter(p => p.id !== Number(id))
+
+  // res.send(users)
 
 })
 
@@ -518,9 +591,3 @@ app.use('/.netlify/functions/server/api', router)
 
 module.exports = app
 module.exports.handler = serverless(app)
-
-// app.listen(port, err => {
-//   if (err) console.log(err)
-//   console.log(`server is listening on port ${port}`)
-// })
-
