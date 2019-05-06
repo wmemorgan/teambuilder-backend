@@ -333,6 +333,15 @@ router.put(`/users/:id`, (req, res) => {
   }
 })
 
+router.delete(`/users/:id`, (req, res) => {
+  const { id } = req.params
+  console.log(`Submit delete request: `, id)
+  users = users.filter(p => p.id !== Number(id))
+
+  res.send(users)
+
+})
+
 
 /*============= ROLE ROUTES ===============*/
 router.get(`/roles`, (req, res) => {
@@ -386,6 +395,15 @@ router.put(`/roles/:id`, (req, res) => {
   }
 })
 
+router.delete(`/roles/:id`, (req, res) => {
+  const { id } = req.params
+  console.log(`Submit delete request: `, id)
+  roles = roles.filter(p => p.id !== Number(id))
+
+  res.send(roles)
+
+})
+
 /*============= CATEGORY ROUTES ===============*/
 router.get(`/categories`, (req, res) => {
   res.json(categories)
@@ -437,6 +455,16 @@ router.put(`/categories/:id`, (req, res) => {
     res.status(404).send({ msg: `category ${id} not found` })
   }
 })
+
+router.delete(`/categories/:id`, (req, res) => {
+  const { id } = req.params
+  console.log(`Submit delete request: `, id)
+  categories = categories.filter(p => p.id !== Number(id))
+
+  res.send(categories)
+
+})
+
 
 
 // Activate Netlify Lambda Middleware
