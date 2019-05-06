@@ -274,7 +274,58 @@ router.put(`/projects/:id`, (req, res) => {
   }
 })
 
-/*=============  ROLE ROUTES ===============*/
+/*============= USER ROUTES ===============*/
+router.get(`/users`, (req, res) => {
+  res.json(users)
+})
+
+router.get(`/users/:id`, (req, res) => {
+  const { id } = req.params
+  let user = users.find(user => user.id == id)
+
+  if (user) {
+    res.status(200).json(user)
+  } else {
+    res.status(404).send({ msg: `user ${id} not found` })
+  }
+})
+
+router.post(`/users`, (req, res) => {
+  // Create new user record
+  let newUser = { id: uuidv4(), ...req.body }
+  console.log(`New user created: `, newUser)
+  // Add new user to existing user list
+  users = [...users, newUser]
+  console.log(`updated user list: `, users)
+  // Send updated list 
+  res.send(users)
+
+})
+
+router.put(`/users/:id`, (req, res) => {
+  const { id } = req.params
+  console.log(`PUT method invoked id: `, id)
+  const user = users.find(user => user.id == id)
+
+  if (user) {
+    const updatedUser = { ...user, ...req.body }
+    console.log(`updatedUser: `, updatedUser)
+    users = [...users.map(user => {
+      if (user.id == id) {
+        return updatedUser
+      } else {
+        return user
+      }
+    })]
+    console.log(`updated User List: `, users)
+    res.send(users)
+  } else {
+    res.status(404).send({ msg: `user ${id} not found` })
+  }
+})
+
+
+/*============= ROLE ROUTES ===============*/
 router.get(`/roles`, (req, res) => {
   res.json(roles)
 })
@@ -304,58 +355,33 @@ router.post(`/roles`, (req, res) => {
   res.send(roles)
 })
 
+router.put(`/roles/:id`, (req, res) => {
+  const { id } = req.params
+  console.log(`PUT method invoked id: `, id)
+  const role = roles.find(role => role.id == id)
+
+  if (role) {
+    const updatedRole = { ...role, ...req.body }
+    console.log(`updatedRole: `, updatedRole)
+    roles = [...roles.map(role => {
+      if (role.id == id) {
+        return updatedRole
+      } else {
+        return role
+      }
+    })]
+    console.log(`updated Role List: `, roles)
+    res.send(roles)
+  } else {
+    res.status(404).send({ msg: `role ${id} not found` })
+  }
+})
+
+/*============= CATEGORY ROUTES ===============*/
 router.get(`/categories`, (req, res) => {
   res.json(categories)
 })
 
-
-router.get(`/users`, (req, res) => {
-  res.json(users)
-})
-
-router.get(`/users/:id`, (req, res) => {
-  let user = users.find(user => user.id == req.params.id)
-
-  if (user) {
-    res.status(200).json(user)
-  } else {
-    res.status(404).send({ msg: `User not found` })
-  }
-})
-
-router.post(`/users`, (req, res) => {
-  // Create new user record
-  let newUser = { id: uuidv4(), ...req.body }
-  console.log(`New user created: `, newUser)
-  // Add new user to existing user list
-  users = [...users, newUser]
-  console.log(`updated user list: `, users)
-  // Send updated list 
-  res.send(users)
-
-})
-
-router.put(`/users/:id`, (req, res) => {
-  const { id } = req.params
-  console.log(`PUT method invoked id: `, id)
-  const user = users.find(user => user.id == id)
-
-  if (user) {
-    const updatedUser = { ...user, ...req.body }
-    console.log(`updatedUser: `, updatedUser)
-    users = [...users.map(user => {
-      if (user.id == id) {
-        return updateduser
-      } else {
-        return user
-      }
-    })]
-    console.log(`updated User List: `, users)
-    res.send(users)
-  } else {
-    res.status(404).send({ msg: `User ${id} not found` })
-  }
-})
 
 app.use('/.netlify/functions/server/api', router)
 
