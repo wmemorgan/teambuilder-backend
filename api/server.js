@@ -308,6 +308,7 @@ router.get(`/categories`, (req, res) => {
   res.json(categories)
 })
 
+
 router.get(`/users`, (req, res) => {
   res.json(users)
 })
@@ -332,6 +333,28 @@ router.post(`/users`, (req, res) => {
   // Send updated list 
   res.send(users)
 
+})
+
+router.put(`/users/:id`, (req, res) => {
+  const { id } = req.params
+  console.log(`PUT method invoked id: `, id)
+  const user = users.find(user => user.id == id)
+
+  if (user) {
+    const updatedUser = { ...user, ...req.body }
+    console.log(`updatedUser: `, updatedUser)
+    users = [...users.map(user => {
+      if (user.id == id) {
+        return updateduser
+      } else {
+        return user
+      }
+    })]
+    console.log(`updated User List: `, users)
+    res.send(users)
+  } else {
+    res.status(404).send({ msg: `User ${id} not found` })
+  }
 })
 
 app.use('/.netlify/functions/server/api', router)
