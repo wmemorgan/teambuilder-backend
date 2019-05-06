@@ -332,7 +332,7 @@ router.get(`/users/:id`, async (req, res) => {
   // }
 })
 
-router.post(`/register`, async (req, res) => {
+router.post(`/signup`, async (req, res) => {
   const { firstName, lastName, email, password,
     avatar, cohort, project_manager, preferred_role
   } = req.body
