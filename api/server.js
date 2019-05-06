@@ -221,6 +221,7 @@ router.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+/*============== PROJECT ROUTES ==================*/
 router.get(`/projects`, (req, res) => {
   res.json(projects)
 })
@@ -260,26 +261,50 @@ router.put(`/projects/:id`, (req, res) => {
     const updatedProject = { ...project, ...req.body }
     console.log(`updatedProject: `, updatedProject)
     projects = [...projects.map(project => {
-      if (project.id === id) {
+      if (project.id == id) {
         return updatedProject
       } else {
         return project
       }
     })]
+    console.log(`updated Project List: `, projects)
     res.send(projects)
   } else {
-    res.status(404).send({ msg: `Project not found` })
+    res.status(404).send({ msg: `Project ${id} not found` })
   }
-  // res.send(project)
 })
 
-
-
-router.get(`roles`, (req, res) => {
+/*=============  ROLE ROUTES ===============*/
+router.get(`/roles`, (req, res) => {
   res.json(roles)
 })
 
-router.get(`categories`, (req, res) => {
+router.get(`/roles/:id`, (req, res) => {
+  const { id } = req.params
+  console.log(`GET incoming ID: `, req.params.id)
+  const role = roles.find(p => p.id == id)
+  console.log(`GET Method /roles/:id `, role)
+
+  if (role) {
+    res.status(200).json(role)
+  } else {
+    console.log(`Role id is not there: `, role)
+    res.status(404).send({ msg: `Role ${req.params.id} not found` })
+  }
+})
+
+router.post(`/roles`, (req, res) => {
+  // Create new role record
+  let newRole = { id: uuidv4(), ...req.body }
+  console.log(`New role created: `, newRole)
+  // Add new role to existing projet list
+  roles = [...roles, newRole]
+  console.log(`updated role list: `, roles)
+  // Send updated list 
+  res.send(roles)
+})
+
+router.get(`/categories`, (req, res) => {
   res.json(categories)
 })
 
