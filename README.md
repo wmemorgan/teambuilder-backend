@@ -7,79 +7,34 @@
 |--------|---------------------------------|----------------------------------------------------|
 | GET    | `/projects`         | Returns all projects       |
 | GET    | `/projects/:id`         | Returns the information for a project.       |
-| PUT    | `/projects/:id`         | Modify a existing project.                   |
-| DELETE | `/projects/:orgId`         | Delete a project.                            |
-
+| PUT    | `/projects/:id`         | Modify an existing project.                   |
+| DELETE | `/projects/:id`         | Delete a project.                            |
 
 #### User Routes
 
-| Method | Endpoint                        | Access Control      | Description                                        |
-|--------|---------------------------------|---------------------|----------------------------------------------------|
-| GET    | `/users/current`                | all users           | Returns info for the logged in user.               |
-| GET    | `/users/org/:userId`            | owners, supervisors | Returns all users for an organization.             |
-| GET    | `/users/:userId`                | owners, supervisors | Returns info for a single user.                    |
-| POST   | `/users/register/owner`         | none                | Creates a new user as owner of a new organization. |
-| PUT    | `/users/:userId`                | owners, supervisors |                                                    |
-| DELETE | `/users/:userId`                | owners, supervisors |                                                    |
+| Method | Endpoint                        | Description                                        |
+|--------|---------------------------------|----------------------------------------------------|
+| GET    | `/users`         | Returns all users       |
+| GET    | `/users/:id`         | Returns the information for a user.       |
+| PUT    | `/users/:id`         | Modify an existing user.                   |
+| DELETE | `/users/:id`         | Delete a user.                            |
 
+#### Role Routes
 
-#### Availability Routes
+| Method | Endpoint                        | Description                                        |
+|--------|---------------------------------|----------------------------------------------------|
+| GET    | `/roles`         | Returns all roles       |
+| GET    | `/roles/:id`         | Returns the information for a role.       |
+| PUT    | `/roles/:id`         | Modify an existing role.                   |
+| DELETE | `/roles/:id`         | Delete a role.                            |
 
-| Method | Endpoint                        | Access Control      | Description                                        |
-|--------|---------------------------------|---------------------|----------------------------------------------------|
-| GET    | `/availabilities/:userId`       | all users           | Returns all availabilities for a given user.       |
-| PUT    | `/availabilities/:availId`      | all users           | Modifies an availability.                          |
+#### Category Routes
 
-
-#### Time Off Request Routes
-
-| Method | Endpoint                        | Access Control      | Description                                        |
-|--------|---------------------------------|---------------------|----------------------------------------------------|
-| GET    | `/time-off-requests/:userId`    | all users           | Returns all time off requests for a given user.    |
-| POST   | `/time-off-requests/:userId`    | all users           |                                                    |
-| PUT    | `/time-off-requests/:requestId` | all users           |                                                    |
-| DELETE | `/time-off-requests/:requestId` | owners, supervisors |                                                    |
-
-
-#### Events Routes
-
-| Method | Endpoint                        | Access Control      | Description                                        |
-|--------|---------------------------------|---------------------|----------------------------------------------------|
-| GET    | `/events/:userId`               | all users           |                                                    |
-| GET    | `/events/organization/:orgId`   | owners, supervisors |                                                    |
-| POST   | `/events/`                      | owners, supervisors |                                                    |
-| PUT    | `/events/:eventId`              | owners, supervisors |                                                    |
-| DELETE | `/events/:eventId`              | owners, supervisors |                                                    |
-
-
-#### Dashboard Routes
-
-| Method | Endpoint                        | Access Control      | Description                                        |
-|--------|---------------------------------|---------------------|----------------------------------------------------|
-| GET    | `/dashboard/:userId`            | all users           | Returns all information for the dashboard          |
-
-
-#### Stripe Routes
-
-| Method | Endpoint                        | Access Control      | Description                                        |
-|--------|---------------------------------|---------------------|----------------------------------------------------|
-| POST   | `/stripe`                       | owners              |                                                    |
-| PUT    | `/stripe`                       | owners              |                                                    |
-
-
-#### Hours of Operation Routes
-
-| Method | Endpoint                        | Access Control      | Description                                        |
-|--------|---------------------------------|---------------------|----------------------------------------------------|
-| GET    | `/hours-of-operation/:orgId`    | all users           |                                                    |
-| PUT    | `/hours-of-operation/:hourId`   | owners, supervisors |                                                    |
-
-
-#### Invites routes
-
-| Method | Endpoint                        | Access Control      | Description                                        |
-|--------|---------------------------------|---------------------|----------------------------------------------------|
-| POST   | `/invites/invite-supervisor`    | owners              |                                                    |
-| POST   | `/invites/invite-employee`      | owners, supervisors |                                                    |
-| POST   | `/invites/register/:inviteId`   | none                | Register in response to an invite.                 |
+| Method | Endpoint                        | Description                                        |
+|--------|---------------------------------|----------------------------------------------------|
+| GET    | `/categories`         | Returns all categories       |
+| GET    | `/categories/:id`         | Returns the information for a category.       |
+| PUT    | `/categories/:id`         | Modify an existing category.                   |
+| DELETE | `/categories/:id`         | Delete a category.                            |
+              |
 
