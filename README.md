@@ -36,5 +36,4 @@
 | GET    | `/categories/:id`         | Returns the information for a category.       |
 | PUT    | `/categories/:id`         | Modify an existing category.                   |
 | DELETE | `/categories/:id`         | Delete a category.                            |
-              |
 
