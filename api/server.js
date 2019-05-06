@@ -242,7 +242,7 @@ router.get(`/projects/:id`, (req, res) => {
 router.post(`/projects`, (req, res) => {
   // Create new project record
   let newProject = { id: uuidv4(), ...req.body}
-  console.log(`New project created: `, project)
+  console.log(`New project created: `, newProject)
   // Add new project to existing projet list
   projects = [...projects, newProject]
   console.log(`updated project list: `, projects)
