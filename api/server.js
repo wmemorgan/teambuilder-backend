@@ -490,7 +490,7 @@ router.post(`/roles`, async (req, res) => {
 
 router.put(`/roles/:id`, async (req, res) => {
   const { id } = req.params
-  const { name, gradingRubric }
+  const { name, gradingRubric } = req.body
   console.log(`PUT method invoked id: `, id)
   try {
     await db.query(`UPDATE users SET name = $1, gradingRubric = $2 WHERE id = $3`,
@@ -586,17 +586,13 @@ router.post(`/categories`, async (req, res) => {
   // res.send(categories)
 })
 
-router.put(`/categories/:id`, (req, res) => {
+router.put(`/categories/:id`, async (req, res) => {
   const { id } = req.params
+  const { name } = req.body
   console.log(`PUT method invoked id: `, id)
 
-  const { id } = req.params
-  const { name }
-  console.log(`PUT method invoked id: `, id)
-  try {
-    await db.query(`UPDATE categories SET name = $1 WHERE id = $2`,
-      [name, id]
-    )
+  try {  
+    await db.query(`UPDATE categories SET name = $1 WHERE id = $2`, [name, id])
     const { rows } = await db.query(`SELECT * FROM categories`)
     res.send(rows)
   }
