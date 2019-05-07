@@ -8,6 +8,9 @@ const cors = require('cors')
 const uuidv4 = require('uuid/v4')
 
 const db = require('../data/db')
+const dbknex = require('../data/knex')
+
+const login = require('../models/login')
 
 const app = express()
 const router = new Router()
@@ -22,14 +25,14 @@ const sendUserError = (msg, res) => {
   res.json({Error: msg })
 }
 
-// const authenticator(req, res, next) {
-//   const { authorization } = req.headers
-//   if (authorization === token ) {
-//     next()
-//   } else {
-//     res.status(403).json({error: 'Use must be logged in to do that.'})
-//   }
-// }
+const authenticator = (req, res, next) => {
+  const { authorization } = req.headers
+  if (authorization === token ) {
+    next()
+  } else {
+    res.status(403).json({error: 'Use must be logged in to do that.'})
+  }
+}
 
 // let projects = [
 //   {
@@ -134,47 +137,60 @@ const sendUserError = (msg, res) => {
 //   }
 // ]
 
-let users = [
-  {
-    id: 1,
-    firstName: 'Gordon',
-    lastName: 'Clark',
-    email: 'Glark@gmail.com',
-    password: 'test',
-    avatar: 'avatar.png',
-    cohort: 'webpt04',
-    project_manager: 'Carlos',
-    role: 'backend',
-    project: 'none',
-  },
-  {
-    id: 2,
-    firstName: 'Donna',
-    lastName: 'Emmerson',
-    email: 'oopsididitagain@yahoo.com',
-    password: 'test',
-    avatar: 'avatar.png',
-    cohort: 'webpt04',
-    role: 'frontend',
-    project_manager: 'Carlos',
-    project: 'none',
-  },
-  {
-    id: 3,
-    firstName: 'Elliot',
-    lastName: 'Alderson',
-    email: 'mrrobot@geocities.com',
-    password: 'test',
-    avatar: 'elliot.jpg',
-    cohort: 'webpt03',
-    project_manager: 'Lola',
-    role: 'data science',
-    project: 'none',
-  }
-]
+// let users = [
+//   {
+//     id: 1,
+//     firstName: 'Gordon',
+//     lastName: 'Clark',
+//     email: 'Glark@gmail.com',
+//     password: 'test',
+//     avatar: 'avatar.png',
+//     cohort: 'webpt04',
+//     project_manager: 'Carlos',
+//     role: 'backend',
+//     project: 'none',
+//   },
+//   {
+//     id: 2,
+//     firstName: 'Donna',
+//     lastName: 'Emmerson',
+//     email: 'oopsididitagain@yahoo.com',
+//     password: 'test',
+//     avatar: 'avatar.png',
+//     cohort: 'webpt04',
+//     role: 'frontend',
+//     project_manager: 'Carlos',
+//     project: 'none',
+//   },
+//   {
+//     id: 3,
+//     firstName: 'Elliot',
+//     lastName: 'Alderson',
+//     email: 'mrrobot@geocities.com',
+//     password: 'test',
+//     avatar: 'elliot.jpg',
+//     cohort: 'webpt03',
+//     project_manager: 'Lola',
+//     role: 'data science',
+//     project: 'none',
+//   }
+// ]
 
 router.get('/', (req, res) => {
   res.send('Hello World!')
+})
+
+router.post('/login', (req, res) => { 
+  let user = login.handleLogin(req, res, dbknex, bcrypt)
+  if(req.body.email === user.email) {
+    req.loggedIn = true
+    res.status(200).json({
+      payload: token
+    })
+  } else {
+    res.status(403)
+    .json({ error: 'Username or Password incorrect.' })
+  }
 })
 
 /*============== PROJECT ROUTES ==================*/
@@ -298,7 +314,7 @@ router.delete(`/projects/:id`, async (req, res) => {
 })
 
 /*============= USER ROUTES ===============*/
-router.get(`/users`, async (req, res) => {
+router.get(`/users`, authenticator, async (req, res) => {
   try {
     const { rows } = await db.query(`SELECT id, first_name, last_name, email,
         avatar, cohort, project_manager, preferred_role FROM users`)
