@@ -176,7 +176,7 @@ const authenticator = (req, res, next) => {
 //   }
 // ]
 
-router.get('/', (req, res) => {
+router.get('/', authenticator, (req, res) => {
   res.send('Hello World!')
 })
 
