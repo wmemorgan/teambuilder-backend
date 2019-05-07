@@ -1,7 +1,7 @@
 ### API Documentation
 
 #### Endpoint
-https://teambuilderapp-api.netlify.com/.netlify/functions/server/api
+https://demo--teambuilderapp-api.netlify.com/.netlify/functions/server/api
 
 #### Project Routes
 
