@@ -22,7 +22,7 @@ app.use(cors())
 
 const sendUserError = (msg, res) => {
   res.status(422)
-  res.json({Error: msg })
+  res.json({ Error: msg })
 }
 
 // const authenticator = (req, res, next) => {
@@ -180,16 +180,16 @@ router.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-router.post('/login', (req, res) => { 
+router.post('/login', (req, res) => {
   let user = login.handleLogin(req, res, dbknex, bcrypt)
-  if(req.body.email === user.email) {
+  if (req.body.email === user.email) {
     req.loggedIn = true
     res.status(200).json({
       payload: token
     })
   } else {
     res.status(403)
-    .json({ error: 'Username or Password incorrect.' })
+      .json({ error: 'Username or Password incorrect.' })
   }
 })
 
@@ -237,12 +237,12 @@ router.post(`/projects`, async (req, res) => {
     )
     const { rows } = await db.query(`SELECT * FROM projects`)
     res.send(rows)
-  } 
+  }
   catch (ex) {
     console.log(`Database query failed ${ex}`)
     res.send(ex)
   }
-  
+
   // // Create new project record
   // let newProject = { id: uuidv4(), ...req.body}
   // console.log(`New project created: `, newProject)
@@ -304,13 +304,26 @@ router.delete(`/projects/:id`, async (req, res) => {
   catch (ex) {
     console.log(`Database query failed ${ex}`)
     res.send(ex)
-  } 
+  }
 
 
   // projects = projects.filter(p => p.id !== Number(id))
 
   // res.send(projects)
 
+})
+
+/*============= PROJECT ASSIGNMENT ROUTES ===============*/
+router.get(`/projects/assignments/:id`, async (res, req) => {
+  const { id } = req.params
+  try {
+    const { rows } = await db.query('SELECT * FROM ProjectRoleAssignments WHERE id = $1', [id])
+    res.send(rows[0])
+  }
+  catch (ex) {
+    console.log(`Database query failed ${ex}`)
+    res.send(ex)
+  }
 })
 
 /*============= USER ROUTES ===============*/
@@ -433,7 +446,7 @@ router.delete(`/users/:id`, async (req, res) => {
   catch (ex) {
     console.log(`Database query failed ${ex}`)
     res.send(ex)
-  } 
+  }
 
 
   // users = users.filter(p => p.id !== Number(id))
@@ -550,7 +563,7 @@ router.delete(`/roles/:id`, async (req, res) => {
   catch (ex) {
     console.log(`Database query failed ${ex}`)
     res.send(ex)
-  } 
+  }
 
   // roles = roles.filter(p => p.id !== Number(id))
 
@@ -606,7 +619,7 @@ router.put(`/categories/:id`, async (req, res) => {
   const { name } = req.body
   console.log(`PUT method invoked id: `, id)
 
-  try {  
+  try {
     await db.query(`UPDATE categories SET name = $1 WHERE id = $2`, [name, id])
     const { rows } = await db.query(`SELECT * FROM categories`)
     res.send(rows)
@@ -648,7 +661,7 @@ router.delete(`/categories/:id`, async (req, res) => {
   catch (ex) {
     console.log(`Database query failed ${ex}`)
     res.send(ex)
-  } 
+  }
 
   // categories = categories.filter(p => p.id !== Number(id))
 
