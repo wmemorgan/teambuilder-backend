@@ -25,14 +25,14 @@ const sendUserError = (msg, res) => {
   res.json({Error: msg })
 }
 
-const authenticator = (req, res, next) => {
-  const { authorization } = req.headers
-  if (authorization === token ) {
-    next()
-  } else {
-    res.status(403).json({error: 'Use must be logged in to do that.'})
-  }
-}
+// const authenticator = (req, res, next) => {
+//   const { authorization } = req.headers
+//   if (authorization === token ) {
+//     next()
+//   } else {
+//     res.status(403).json({error: 'Use must be logged in to do that.'})
+//   }
+// }
 
 // let projects = [
 //   {
@@ -176,7 +176,7 @@ const authenticator = (req, res, next) => {
 //   }
 // ]
 
-router.get('/', authenticator, (req, res) => {
+router.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
@@ -209,7 +209,7 @@ router.get(`/projects/:id`, async (req, res) => {
   const { id } = req.params
   try {
     const { rows } = await db.query('SELECT * FROM projects WHERE id = $1', [id])
-    res.send(rows)
+    res.send(rows[0])
   }
   catch (ex) {
     console.log(`Database query failed ${ex}`)
@@ -314,7 +314,7 @@ router.delete(`/projects/:id`, async (req, res) => {
 })
 
 /*============= USER ROUTES ===============*/
-router.get(`/users`, authenticator, async (req, res) => {
+router.get(`/users`, async (req, res) => {
   try {
     const { rows } = await db.query(`SELECT id, first_name, last_name, email,
         avatar, cohort, project_manager, preferred_role FROM users`)
@@ -332,7 +332,7 @@ router.get(`/users/:id`, async (req, res) => {
   try {
     const { rows } = await db.query(
       'SELECT first_name, last_name, email, avatar, cohort, project_manager, preferred_role FROM users WHERE id = $1', [id])
-    res.send(rows)
+    res.send(rows[0])
   }
   catch (ex) {
     console.log(`Database query failed ${ex}`)
@@ -460,7 +460,7 @@ router.get(`/roles/:id`, async (req, res) => {
   const { id } = req.params
   try {
     const { rows } = await db.query('SELECT * FROM roles WHERE id = $1', [id])
-    res.send(rows)
+    res.send(rows[0])
   }
   catch (ex) {
     console.log(`Database query error ${ex}`)
