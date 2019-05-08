@@ -83,13 +83,22 @@ router.put(`/projects/:id`, async (req, res) => {
   }
 })
 
-router.delete(`/projects/:id`, (req, res) => {
+router.delete(`/projects/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`Submit delete request: `, id)
-  projects = projects.filter(p => p.id !== Number(id))
-
-  res.send(projects)
-
+  try {
+    let data = await db.findById(id, projects)
+    if (data) {
+      let updatedData = await db.remove(id, projects)
+      res.send(updatedData)
+    }
+    else {
+      res.status(404).send({ message: `Record ${id} not found` })
+    }
+  }
+  catch (ex) {
+    res.status(500).send({ message: `Record could not be removed err: ${JSON.stringify(ex)}` })
+  }
 })
 
 /*============= USER ROUTES ===============*/
@@ -137,12 +146,22 @@ router.put(`/users/:id`, async (req, res) => {
   }
 })
 
-router.delete(`/users/:id`, (req, res) => {
+router.delete(`/users/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`Submit delete request: `, id)
-  users = users.filter(p => p.id !== Number(id))
-
-  res.send(users)
+  try {
+    let data = await db.findById(id, users)
+    if (data) {
+      let updatedData = await db.remove(id, users)
+      res.send(updatedData)
+    }
+    else {
+      res.status(404).send({ message: `Record ${id} not found` })
+    }
+  }
+  catch (ex) {
+    res.status(500).send({ message: `Record could not be removed err: ${JSON.stringify(ex)}` })
+  }
 
 })
 
@@ -193,12 +212,22 @@ router.put(`/roles/:id`, async (req, res) => {
   }
 })
 
-router.delete(`/roles/:id`, (req, res) => {
+router.delete(`/roles/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`Submit delete request: `, id)
-  roles = roles.filter(p => p.id !== Number(id))
-
-  res.send(roles)
+  try {
+    let data = await db.findById(id, roles)
+    if (data) {
+      let updatedData = await db.remove(id, roles)
+      res.send(updatedData)
+    }
+    else {
+      res.status(404).send({ message: `Record ${id} not found` })
+    }
+  }
+  catch (ex) {
+    res.status(500).send({ message: `Record could not be removed err: ${JSON.stringify(ex)}` })
+  }
 
 })
 
@@ -249,12 +278,22 @@ router.put(`/categories/:id`, async (req, res) => {
   }
 })
 
-router.delete(`/categories/:id`, (req, res) => {
+router.delete(`/categories/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`Submit delete request: `, id)
-  categories = categories.filter(p => p.id !== Number(id))
-
-  res.send(categories)
+  try {
+    let data = await db.findById(id, categories)
+    if (data) {
+      let updatedData = await db.remove(id, categories)
+      res.send(updatedData)
+    }
+    else {
+      res.status(404).send({ message: `Record ${id} not found` })
+    }
+  }
+  catch (ex) {
+    res.status(500).send({ message: `Record could not be removed err: ${JSON.stringify(ex)}` })
+  }
 
 })
 
