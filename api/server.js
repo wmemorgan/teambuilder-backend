@@ -71,25 +71,15 @@ router.post(`/projects`, async (req, res) => {
   }
 })
 
-router.put(`/projects/:id`, (req, res) => {
+router.put(`/projects/:id`, async (req, res) => {
   const { id } = req.params
-  console.log(`PUT method invoked id: `, id)
-  const project = projects.find(project => project.id == id)
-
-  if (project) {
-    const updatedProject = { ...project, ...req.body }
-    console.log(`updatedProject: `, updatedProject)
-    projects = [...projects.map(project => {
-      if (project.id == id) {
-        return updatedProject
-      } else {
-        return project
-      }
-    })]
-    console.log(`updated Project List: `, projects)
-    res.send(projects)
-  } else {
-    res.status(404).send({ msg: `Project ${id} not found` })
+  try {
+    let data = await db.update(id, req.body, projects)
+    console.log(`Updated list: ${JSON.stringify(data)}`)
+    res.json(data)
+  }
+  catch (ex) {
+    res.status(404).send({message: `Record ${id} not found: ${ex}`})
   }
 })
 
@@ -135,25 +125,15 @@ router.post(`/users`, async (req, res) => {
   }
 })
 
-router.put(`/users/:id`, (req, res) => {
+router.put(`/users/:id`, async (req, res) => {
   const { id } = req.params
-  console.log(`PUT method invoked id: `, id)
-  const user = users.find(user => user.id == id)
-
-  if (user) {
-    const updatedUser = { ...user, ...req.body }
-    console.log(`updatedUser: `, updatedUser)
-    users = [...users.map(user => {
-      if (user.id == id) {
-        return updatedUser
-      } else {
-        return user
-      }
-    })]
-    console.log(`updated User List: `, users)
-    res.send(users)
-  } else {
-    res.status(404).send({ msg: `user ${id} not found` })
+  try {
+    let data = await db.update(id, req.body, users)
+    console.log(`Updated list: ${JSON.stringify(data)}`)
+    res.json(data)
+  }
+  catch (ex) {
+    res.status(404).send({ message: `Record ${id} not found: ${ex}` })
   }
 })
 
@@ -201,25 +181,15 @@ router.post(`/roles`, async (req, res) => {
   }
 })
 
-router.put(`/roles/:id`, (req, res) => {
+router.put(`/roles/:id`, async (req, res) => {
   const { id } = req.params
-  console.log(`PUT method invoked id: `, id)
-  const role = roles.find(role => role.id == id)
-
-  if (role) {
-    const updatedRole = { ...role, ...req.body }
-    console.log(`updatedRole: `, updatedRole)
-    roles = [...roles.map(role => {
-      if (role.id == id) {
-        return updatedRole
-      } else {
-        return role
-      }
-    })]
-    console.log(`updated Role List: `, roles)
-    res.send(roles)
-  } else {
-    res.status(404).send({ msg: `role ${id} not found` })
+  try {
+    let data = await db.update(id, req.body, roles)
+    console.log(`Updated list: ${JSON.stringify(data)}`)
+    res.json(data)
+  }
+  catch (ex) {
+    res.status(404).send({ message: `Record ${id} not found: ${ex}` })
   }
 })
 
@@ -267,25 +237,15 @@ router.post(`/categories`, async (req, res) => {
   }
 })
 
-router.put(`/categories/:id`, (req, res) => {
+router.put(`/categories/:id`, async (req, res) => {
   const { id } = req.params
-  console.log(`PUT method invoked id: `, id)
-  const category = categories.find(categorie => categorie.id == id)
-
-  if (category) {
-    const updatedCategory = { ...category, ...req.body }
-    console.log(`updatedCategory: `, updatedCategory)
-    categories = [...categories.map(category => {
-      if (category.id == id) {
-        return updatedCategory
-      } else {
-        return category
-      }
-    })]
-    console.log(`updated category list: `, categories)
-    res.send(categories)
-  } else {
-    res.status(404).send({ msg: `category ${id} not found` })
+  try {
+    let data = await db.update(id, req.body, categories)
+    console.log(`Updated list: ${JSON.stringify(data)}`)
+    res.json(data)
+  }
+  catch (ex) {
+    res.status(404).send({ message: `Record ${id} not found: ${ex}` })
   }
 })
 
