@@ -1,5 +1,6 @@
 const uuidv4 = require('uuid/v4')
 
+// Database functions
 const findAll = (arr) => {
   return Promise.resolve(arr)
 }
@@ -50,10 +51,11 @@ const deleteRecord = (id, arr) => {
 
 const updateRecord = (id, record, arr) => {
   let recordSearch = arr.find(item => item.id === Number(id))
-  if (Number(id) === Number(record.id)) {
+  if (Number(id) === Number(recordSearch.id)) {
+    let updatedRecord = {...recordSearch, ...record }
     let updatedArr = arr.map(item => {
-      if (Number(id) === Number(item.id)) {
-        return record
+      if (item.id == id) {
+        return updatedRecord
       }
       else  {
         return item
