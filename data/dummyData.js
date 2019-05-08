@@ -1,6 +1,4 @@
-// Dummy Data to be used prior to API implementation
-
-export const projects = [
+let projects = [
   {
     id: 1,
     name: 'Team Builder App',
@@ -83,7 +81,7 @@ export const projects = [
         id: 3,
         role: 'Web UI Developer',
         user: 'Sandra'
-      },      
+      },
     ],
     category: 'Education',
     projectComplete: false
@@ -97,13 +95,13 @@ export const projects = [
       'User can create an account, join an existing school account, and search for existing bubls to join. They can explore interests through hashtag searches. They can connect with others and share experiences.',
     stretch: '',
     roleAssignments: [],
-    signUpList: [],    
+    signUpList: [],
     category: 'Social Media',
     projectComplete: true
   }
 ]
 
-export const roles = [
+let roles = [
   {
     id: 1,
     name: 'Web UI Developer'
@@ -126,7 +124,7 @@ export const roles = [
   },
 ]
 
-export const categories = [
+let categories = [
   {
     id: 1,
     name: 'Productivity'
@@ -152,3 +150,43 @@ export const categories = [
     name: 'Social Media'
   }
 ]
+
+let users = [
+  {
+    id: 1,
+    firstName: 'Gordon',
+    lastName: 'Clark',
+    email: 'Glark@gmail.com',
+    avatar: 'avatar.png',
+    cohort: 'webpt04',
+    project_manager: 'Carlos',
+    role: 'backend',
+    project: 'none',
+  },
+  {
+    id: 2,
+    firstName: 'Donna',
+    lastName: 'Emmerson',
+    email: 'oopsididitagain@yahoo.com',
+    avatar: 'avatar.png',
+    cohort: 'webpt04',
+    role: 'frontend',
+    project_manager: 'Carlos',
+    project: 'none',
+  },
+  {
+    id: 3,
+    firstName: 'Elliot',
+    lastName: 'Alderson',
+    email: 'mrrobot@geocities.com',
+    avatar: 'elliot.jpg',
+    cohort: 'webpt03',
+    project_manager: 'Lola',
+    role: 'data science',
+    project: 'none',
+  }
+]
+
+module.exports = {
+  projects, users, roles, categories
+}
