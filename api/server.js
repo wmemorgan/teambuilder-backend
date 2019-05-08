@@ -59,16 +59,16 @@ router.get(`/projects/:id`, async (req, res) => {
   }
 })
 
-router.post(`/projects`, (req, res) => {
-  // Create new project record
-  let newProject = { id: uuidv4(), ...req.body}
-  console.log(`New project created: `, newProject)
-  // Add new project to existing projet list
-  projects = [...projects, newProject]
-  console.log(`updated project list: `, projects)
-  // Send updated list 
-  res.send(projects)
-
+router.post(`/projects`, async (req, res) => {
+  console.log(`Invoked add record: `, req.body)
+  try {
+    let data = await db.add(req.body, projects)
+    console.log(`Add record successful data created: `, data)
+    res.status(201).json(data)
+  }
+  catch (ex) {
+    res.status(500).send(ex)
+  }
 })
 
 router.put(`/projects/:id`, (req, res) => {
@@ -123,16 +123,16 @@ router.get(`/users/:id`, async (req, res) => {
   }
 })
 
-router.post(`/users`, (req, res) => {
-  // Create new user record
-  let newUser = { id: uuidv4(), ...req.body }
-  console.log(`New user created: `, newUser)
-  // Add new user to existing user list
-  users = [...users, newUser]
-  console.log(`updated user list: `, users)
-  // Send updated list 
-  res.send(users)
-
+router.post(`/users`, async (req, res) => {
+  console.log(`Invoked add record: `, req.body)
+  try {
+    let data = await db.add(req.body, users)
+    console.log(`Add record successful data created: `, data)
+    res.status(201).json(data)
+  }
+  catch (ex) {
+    res.status(500).send(ex)
+  }
 })
 
 router.put(`/users/:id`, (req, res) => {
@@ -189,15 +189,16 @@ router.get(`/roles/:id`, async (req, res) => {
   }
 })
 
-router.post(`/roles`, (req, res) => {
-  // Create new role record
-  let newRole = { id: uuidv4(), ...req.body }
-  console.log(`New role created: `, newRole)
-  // Add new role to existing projet list
-  roles = [...roles, newRole]
-  console.log(`updated role list: `, roles)
-  // Send updated list 
-  res.send(roles)
+router.post(`/roles`, async (req, res) => {
+  console.log(`Invoked add record: `, JSON.stringify(req.body))
+  try {
+    let data = await db.add(req.body, roles)
+    console.log(`Add record successful data created: `, data)
+    res.status(201).json(data)
+  }
+  catch (ex) {
+    res.status(500).send(ex)
+  }
 })
 
 router.put(`/roles/:id`, (req, res) => {
@@ -254,15 +255,16 @@ router.get(`/categories/:id`, async (req, res) => {
   }
 })
 
-router.post(`/categories`, (req, res) => {
-  // Create new categorie record
-  let newCategory = { id: uuidv4(), ...req.body }
-  console.log(`New categorie created: `, newCategory)
-  // Add new categorie to existing projet list
-  categories = [...categories, newCategory]
-  console.log(`updated categories: `, categories)
-  // Send updated list 
-  res.send(categories)
+router.post(`/categories`, async (req, res) => {
+  console.log(`Invoked add record: ${JSON.stringify(req.body)}`)
+  try {
+    let data = await db.add(req.body, categories)
+    console.log(`Add record successful data created: `, data)
+    res.status(201).json(data)
+  }
+  catch (ex) {
+    res.status(500).send(ex)
+  }
 })
 
 router.put(`/categories/:id`, (req, res) => {

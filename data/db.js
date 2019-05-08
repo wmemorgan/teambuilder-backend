@@ -26,9 +26,7 @@ const addRecord = (record, arr) => {
       ...record,
       createdAt: new Date().toISOString()
     }
-
     arr.push(newRecord)
-
     return Promise.resolve(arr)
   } else {
     return Promise.reject({
