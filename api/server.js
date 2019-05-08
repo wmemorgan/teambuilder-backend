@@ -2,7 +2,6 @@ const express = require('express')
 const serverless = require('serverless-http')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const uuidv4 = require('uuid/v4')
 
 const db = require('../data/db')
 const { projects, users, roles, categories } = require('../data/dummyData')
@@ -165,7 +164,6 @@ router.delete(`/users/:id`, async (req, res) => {
 
 })
 
-
 /*============= ROLE ROUTES ===============*/
 router.get(`/roles`, async (req, res) => {
   try {
@@ -296,8 +294,6 @@ router.delete(`/categories/:id`, async (req, res) => {
   }
 
 })
-
-
 
 // Activate Netlify Lambda Middleware
 app.use('/.netlify/functions/server/api', router)
