@@ -38,23 +38,24 @@ router.get('/', (req, res) => {
 
 /*============== PROJECT ROUTES ==================*/
 router.get(`/projects`, async (req, res) => {
-  console.log(`projects: `, projects)
-  let results = await db.findAll(projects)
-  console.log(`results: `, results)
-  res.json(results)
+  try {
+    let data = await db.findAll(projects)
+    res.json(data)
+  } 
+  catch (ex) {
+    res.status(404).json({ errorMessage: ex })
+  }
 })
 
-router.get(`/projects/:id`, (req, res) => {
+router.get(`/projects/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`GET incoming ID: `, req.params.id)
-  const project = projects.find(p => p.id == id)
-  console.log(`GET Method /projects/:id `, project)
-
-  if (project) {
-    res.status(200).json(project)
-  } else {
-    console.log(`Project id is not there: `, project)
-    res.status(404).send({msg: `Project ${req.params.id} not found`})
+  try {
+    let data = await db.findById(id, projects)
+    res.json(data)
+  } 
+  catch (ex) {
+    res.status(404).json({ message: `Item ${id} not found`})
   }
 })
 
@@ -102,18 +103,23 @@ router.delete(`/projects/:id`, (req, res) => {
 })
 
 /*============= USER ROUTES ===============*/
-router.get(`/users`, (req, res) => {
-  res.json(users)
+router.get(`/users`, async (req, res) => {
+  try {
+    let data = await db.findAll(users)
+    res.json(data)
+  } catch (ex) {
+    res.status(500).json({ errorMessage: ex })
+  }
 })
 
-router.get(`/users/:id`, (req, res) => {
+router.get(`/users/:id`, async (req, res) => {
   const { id } = req.params
-  let user = users.find(user => user.id == id)
-
-  if (user) {
-    res.status(200).json(user)
-  } else {
-    res.status(404).send({ msg: `user ${id} not found` })
+  try {
+    let data = await db.findById(id, users)
+    res.json(data)
+  }
+  catch (ex) {
+    res.status(404).json({ message: `Item ${id} not found` })
   }
 })
 
@@ -162,21 +168,24 @@ router.delete(`/users/:id`, (req, res) => {
 
 
 /*============= ROLE ROUTES ===============*/
-router.get(`/roles`, (req, res) => {
-  res.json(roles)
+router.get(`/roles`, async (req, res) => {
+  try {
+    let data = await db.findAll(roles)
+    res.json(data)
+  } catch (ex) {
+    res.status(500).json({ errorMessage: ex })
+  }
 })
 
-router.get(`/roles/:id`, (req, res) => {
+router.get(`/roles/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`GET incoming ID: `, req.params.id)
-  const role = roles.find(p => p.id == id)
-  console.log(`GET Method /roles/:id `, role)
-
-  if (role) {
-    res.status(200).json(role)
-  } else {
-    console.log(`Role id is not there: `, role)
-    res.status(404).send({ msg: `Role ${req.params.id} not found` })
+  try {
+    let data = await db.findById(id, roles)
+    res.json(data)
+  }
+  catch (ex) {
+    res.status(404).json({ message: `Item ${id} not found` })
   }
 })
 
@@ -223,21 +232,25 @@ router.delete(`/roles/:id`, (req, res) => {
 })
 
 /*============= CATEGORY ROUTES ===============*/
-router.get(`/categories`, (req, res) => {
-  res.json(categories)
+router.get(`/categories`, async (req, res) => {
+  try {
+    let data = await db.findAll(categories)
+    res.json(data)
+  } catch (ex) {
+    res.status(500).json({errorMessage: ex})
+  }
+
 })
 
-router.get(`/categories/:id`, (req, res) => {
+router.get(`/categories/:id`, async (req, res) => {
   const { id } = req.params
   console.log(`GET incoming ID: `, req.params.id)
-  const category = categories.find(p => p.id == id)
-  console.log(`GET Method /categories/:id `, category)
-
-  if (category) {
-    res.status(200).json(category)
-  } else {
-    console.log(`category id is not there: `, category)
-    res.status(404).send({ msg: `category ${req.params.id} not found` })
+  try {
+    let data = await db.findById(id, categories)
+    res.json(data)
+  }
+  catch (ex) {
+    res.status(404).json({ message: `Item ${id} not found` })
   }
 })
 
