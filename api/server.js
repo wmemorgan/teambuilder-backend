@@ -15,7 +15,9 @@ const token =
 // Resource Routes
 const projectsRoutes = require('../routes/projectsRoutes')
 const rolesRoutes = require('../routes/rolesRoutes')
+const categoriesRoutes = require('../routes/categoriesRoutes')
 
+// Load middleware
 app.use(express.json())
 app.use(logger(`dev`))
 app.use(cors())
@@ -104,74 +106,75 @@ router.delete(`/users/:id`, async (req, res) => {
 })
 
 /*============= CATEGORY ROUTES ===============*/
-router.get(`/categories`, async (req, res) => {
-  try {
-    let data = await db.findAll(categories)
-    res.json(data)
-  } catch (ex) {
-    res.status(500).json({errorMessage: ex})
-  }
+// router.get(`/categories`, async (req, res) => {
+//   try {
+//     let data = await db.findAll(categories)
+//     res.json(data)
+//   } catch (ex) {
+//     res.status(500).json({errorMessage: ex})
+//   }
 
-})
+// })
 
-router.get(`/categories/:id`, async (req, res) => {
-  const { id } = req.params
-  console.log(`GET incoming ID: `, req.params.id)
-  try {
-    let data = await db.findById(id, categories)
-    res.json(data)
-  }
-  catch (ex) {
-    res.status(404).json({ message: `Item ${id} not found` })
-  }
-})
+// router.get(`/categories/:id`, async (req, res) => {
+//   const { id } = req.params
+//   console.log(`GET incoming ID: `, req.params.id)
+//   try {
+//     let data = await db.findById(id, categories)
+//     res.json(data)
+//   }
+//   catch (ex) {
+//     res.status(404).json({ message: `Item ${id} not found` })
+//   }
+// })
 
-router.post(`/categories`, async (req, res) => {
-  console.log(`Invoked add record: ${JSON.stringify(req.body)}`)
-  try {
-    let data = await db.add(req.body, categories)
-    console.log(`Add record successful data created: `, data)
-    res.status(201).json(data)
-  }
-  catch (ex) {
-    res.status(500).send(ex)
-  }
-})
+// router.post(`/categories`, async (req, res) => {
+//   console.log(`Invoked add record: ${JSON.stringify(req.body)}`)
+//   try {
+//     let data = await db.add(req.body, categories)
+//     console.log(`Add record successful data created: `, data)
+//     res.status(201).json(data)
+//   }
+//   catch (ex) {
+//     res.status(500).send(ex)
+//   }
+// })
 
-router.put(`/categories/:id`, async (req, res) => {
-  const { id } = req.params
-  try {
-    let data = await db.update(id, req.body, categories)
-    console.log(`Updated list: ${JSON.stringify(data)}`)
-    res.json(data)
-  }
-  catch (ex) {
-    res.status(404).send({ message: `Record ${id} not found: ${ex}` })
-  }
-})
+// router.put(`/categories/:id`, async (req, res) => {
+//   const { id } = req.params
+//   try {
+//     let data = await db.update(id, req.body, categories)
+//     console.log(`Updated list: ${JSON.stringify(data)}`)
+//     res.json(data)
+//   }
+//   catch (ex) {
+//     res.status(404).send({ message: `Record ${id} not found: ${ex}` })
+//   }
+// })
 
-router.delete(`/categories/:id`, async (req, res) => {
-  const { id } = req.params
-  console.log(`Submit delete request: `, id)
-  try {
-    let data = await db.findById(id, categories)
-    if (data) {
-      let updatedData = await db.remove(id, categories)
-      res.send(updatedData)
-    }
-    else {
-      res.status(404).send({ message: `Record ${id} not found` })
-    }
-  }
-  catch (ex) {
-    res.status(500).send({ message: `Record could not be removed err: ${JSON.stringify(ex)}` })
-  }
+// router.delete(`/categories/:id`, async (req, res) => {
+//   const { id } = req.params
+//   console.log(`Submit delete request: `, id)
+//   try {
+//     let data = await db.findById(id, categories)
+//     if (data) {
+//       let updatedData = await db.remove(id, categories)
+//       res.send(updatedData)
+//     }
+//     else {
+//       res.status(404).send({ message: `Record ${id} not found` })
+//     }
+//   }
+//   catch (ex) {
+//     res.status(500).send({ message: `Record could not be removed err: ${JSON.stringify(ex)}` })
+//   }
 
-})
+// })
 
 // Activate Routes
 app.use('/.netlify/functions/server/api/projects', projectsRoutes)
 app.use('/.netlify/functions/server/api/roles', rolesRoutes)
+app.use('/.netlify/functions/server/api/categories', categoriesRoutes)
 app.use('/.netlify/functions/server/api', router)
 
 app.use('/', (req, res) => {
