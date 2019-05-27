@@ -1,4 +1,10 @@
-const uuidv4 = require('uuid/v4')
+// Helper functions
+const autoIncrement = arr => {
+  console.log(`autoincrement array last element ID + 1: `, arr[arr.length-1].id + 1)
+  let newId = arr[arr.length - 1].id + 1
+  console.log(`autoIncrement newId: `, newId)
+  return newId
+}
 
 // Database functions
 const findAll = (arr) => {
@@ -15,7 +21,7 @@ const findById = (id, arr) => {
   } else {
     return Promise.reject({
       code: 404,
-      message: `item not found`
+      message: `Item ID ${id} not found`
     })
   }
 }
@@ -23,7 +29,7 @@ const findById = (id, arr) => {
 const addRecord = (record, arr) => {
   if (record) {
     let newRecord = {
-      id: uuidv4(),
+      id: autoIncrement(arr),
       ...record,
       createdAt: new Date().toISOString()
     }
