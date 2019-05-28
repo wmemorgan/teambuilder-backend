@@ -7,7 +7,7 @@ const { roles } = require('../data/dummyData')
 const validateProjectId = require('../middleware')
 const idBodyCheck = [requiredData, validateRoleId]
 
-
+/*============== ROLES ROUTES ==================*/
 router.get(`/`, async (req, res) => {
   try {
     let data = await db.findAll(roles)

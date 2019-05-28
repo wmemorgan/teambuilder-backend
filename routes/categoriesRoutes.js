@@ -7,7 +7,7 @@ const { categories } = require('../data/dummyData')
 const validateProjectId = require('../middleware')
 const idBodyCheck = [requiredData, validateRoleId]
 
-
+/*============== CATEGORY ROUTES ==================*/
 router.get(`/`, async (req, res) => {
   try {
     let data = await db.findAll(categories)
