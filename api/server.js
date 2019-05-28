@@ -16,6 +16,7 @@ const token =
 const projectsRoutes = require('../routes/projectsRoutes')
 const rolesRoutes = require('../routes/rolesRoutes')
 const categoriesRoutes = require('../routes/categoriesRoutes')
+const usersRoutes = require('../routes/usersRoutes')
 
 // Load middleware
 app.use(express.json())
@@ -42,85 +43,19 @@ const sendUserError = (msg, res) => {
 // })
 
 /*============= USER ROUTES ===============*/
-router.get(`/users`, async (req, res) => {
-  try {
-    let data = await db.findAll(users)
-    res.json(data)
-  } catch (ex) {
-    res.status(500).json({ errorMessage: ex })
-  }
-})
-
-router.get(`/users/:id`, async (req, res) => {
-  const { id } = req.params
-  try {
-    let data = await db.findById(id, users)
-    res.json(data)
-  }
-  catch (ex) {
-    res.status(404).json({ message: `Item ${id} not found` })
-  }
-})
-
-router.post(`/users`, async (req, res) => {
-  console.log(`Invoked add record: `, req.body)
-  try {
-    let data = await db.add(req.body, users)
-    console.log(`Add record successful data created: `, data)
-    res.status(201).json(data)
-  }
-  catch (ex) {
-    res.status(500).send(ex)
-  }
-})
-
-router.put(`/users/:id`, async (req, res) => {
-  const { id } = req.params
-  try {
-    let data = await db.update(id, req.body, users)
-    console.log(`Updated list: ${JSON.stringify(data)}`)
-    res.json(data)
-  }
-  catch (ex) {
-    res.status(404).send({ message: `Record ${id} not found: ${ex}` })
-  }
-})
-
-router.delete(`/users/:id`, async (req, res) => {
-  const { id } = req.params
-  console.log(`Submit delete request: `, id)
-  try {
-    let data = await db.findById(id, users)
-    if (data) {
-      let updatedData = await db.remove(id, users)
-      res.send(updatedData)
-    }
-    else {
-      res.status(404).send({ message: `Record ${id} not found` })
-    }
-  }
-  catch (ex) {
-    res.status(500).send({ message: `Record could not be removed err: ${JSON.stringify(ex)}` })
-  }
-
-})
-
-/*============= CATEGORY ROUTES ===============*/
-// router.get(`/categories`, async (req, res) => {
+// router.get(`/users`, async (req, res) => {
 //   try {
-//     let data = await db.findAll(categories)
+//     let data = await db.findAll(users)
 //     res.json(data)
 //   } catch (ex) {
-//     res.status(500).json({errorMessage: ex})
+//     res.status(500).json({ errorMessage: ex })
 //   }
-
 // })
 
-// router.get(`/categories/:id`, async (req, res) => {
+// router.get(`/users/:id`, async (req, res) => {
 //   const { id } = req.params
-//   console.log(`GET incoming ID: `, req.params.id)
 //   try {
-//     let data = await db.findById(id, categories)
+//     let data = await db.findById(id, users)
 //     res.json(data)
 //   }
 //   catch (ex) {
@@ -128,10 +63,10 @@ router.delete(`/users/:id`, async (req, res) => {
 //   }
 // })
 
-// router.post(`/categories`, async (req, res) => {
-//   console.log(`Invoked add record: ${JSON.stringify(req.body)}`)
+// router.post(`/users`, async (req, res) => {
+//   console.log(`Invoked add record: `, req.body)
 //   try {
-//     let data = await db.add(req.body, categories)
+//     let data = await db.add(req.body, users)
 //     console.log(`Add record successful data created: `, data)
 //     res.status(201).json(data)
 //   }
@@ -140,10 +75,10 @@ router.delete(`/users/:id`, async (req, res) => {
 //   }
 // })
 
-// router.put(`/categories/:id`, async (req, res) => {
+// router.put(`/users/:id`, async (req, res) => {
 //   const { id } = req.params
 //   try {
-//     let data = await db.update(id, req.body, categories)
+//     let data = await db.update(id, req.body, users)
 //     console.log(`Updated list: ${JSON.stringify(data)}`)
 //     res.json(data)
 //   }
@@ -152,13 +87,13 @@ router.delete(`/users/:id`, async (req, res) => {
 //   }
 // })
 
-// router.delete(`/categories/:id`, async (req, res) => {
+// router.delete(`/users/:id`, async (req, res) => {
 //   const { id } = req.params
 //   console.log(`Submit delete request: `, id)
 //   try {
-//     let data = await db.findById(id, categories)
+//     let data = await db.findById(id, users)
 //     if (data) {
-//       let updatedData = await db.remove(id, categories)
+//       let updatedData = await db.remove(id, users)
 //       res.send(updatedData)
 //     }
 //     else {
@@ -171,10 +106,12 @@ router.delete(`/users/:id`, async (req, res) => {
 
 // })
 
+
 // Activate Routes
 app.use('/.netlify/functions/server/api/projects', projectsRoutes)
 app.use('/.netlify/functions/server/api/roles', rolesRoutes)
 app.use('/.netlify/functions/server/api/categories', categoriesRoutes)
+app.use('/.netlify/functions/server/api/users', usersRoutes)
 app.use('/.netlify/functions/server/api', router)
 
 app.use('/', (req, res) => {
