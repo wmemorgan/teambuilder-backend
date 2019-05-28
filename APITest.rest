@@ -1,49 +1,32 @@
 ### API Server test
-https://wme-zoos-api.herokuapp.com/
-http://localhost:5000
-
 ### GET (all)
-https://wme-zoos-api.herokuapp.com/api/zoos
-http://localhost:5000/api/zoos
+http://localhost:9000/.netlify/functions/server/api/users
 
 ### GET (by id)
-https://wme-zoos-api.herokuapp.com/api/zoos/5
-
-http://localhost:5000/api/zoos/4
+http://localhost:9000/.netlify/functions/server/api/projects/2
 
 ### POST
-POST https://wme-zoos-api.herokuapp.com/api/zoos HTTP/1.1
+POST http://localhost:9000/.netlify/functions/server/api/users HTTP/1.1
 content-type: application/json
 
 {
-  "name": "Test zoo"
+ "firstName": "Harry",
+ "email": "hpotter@hogwarts.edu"
 }
 
-POST http://localhost:5000/api/zoos HTTP/1.1
-content-type: application/json
-
-{
-  "name": "Test zoo"
-}
 
 ### PUT
-PUT https://wme-zoos-api.herokuapp.com/api/zoos/5 HTTP/1.1
+PUT http://localhost:9000/.netlify/functions/server/api/users/4 HTTP/1.1
 content-type: application/json
 
 {
-  "name": "My Test Zoo"
+  "firstName": "George",
+  "lastName": "Kaplan",
+  "email": "george@gmail.com",
+  "cohort": "WEBPT4",
+  "project_manager": "Anthony"
 }
-
-PUT http://localhost:5000/api/zoos/3 HTTP/1.1
-content-type: application/json
-
-{
-  "name": "San Diego Zoo"
-}
-
 
 
 ### DELETE
-DELETE https://wme-zoos-api.herokuapp.com/api/zoos/5
-
-DELETE http://localhost:5000/api/zoos/4
+DELETE http://localhost:9000/.netlify/functions/server/api/projects/2
