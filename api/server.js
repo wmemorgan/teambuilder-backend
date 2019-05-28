@@ -32,7 +32,7 @@ app.use('/.netlify/functions/server/api/users', usersRoutes)
 app.use('/.netlify/functions/server/api', router)
 
 app.use('/', (req, res) => {
-  res.send(`<h1>Welcome to the TeamBuilder APP API</h1>`)
+  res.send(`<h1>Welcome to the TeamBuilder App API</h1>`)
 })
 
 module.exports = app
