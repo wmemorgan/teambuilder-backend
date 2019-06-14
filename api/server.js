@@ -8,7 +8,7 @@ const cors = require('cors')
 const uuidv4 = require('uuid/v4')
 
 const db = require('../data/db')
-const dbknex = require('../data/knex')
+//const dbknex = require('../data/knex')
 
 const login = require('../models/login')
 
@@ -559,8 +559,15 @@ router.delete(`/roles/:id`, async (req, res) => {
 })
 
 /*============= CATEGORY ROUTES ===============*/
-router.get(`/categories`, (req, res) => {
-  res.json(categories)
+router.get(`/categories`, async (req, res) => {
+  try {
+    const { rows } = await db.query(`SELECT * FROM categories`)
+    res.send(rows)
+  }
+  catch (ex) {
+    console.log(`Database query error ${ex}`)
+    res.send(ex)
+  }
 })
 
 router.get(`/categories/:id`, (req, res) => {
