@@ -3,10 +3,11 @@
 http://localhost:9000/.netlify/functions/server/api/projects
 
 ### GET ALL (users)
-http://localhost:9000/.netlify/functions/server/api/users
+GET http://localhost:9000/.netlify/functions/server/api/users HTTP/1.1
+Authorization: esfeyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NUIhkufemQifQ
 
 ### GET ALL (roles)
-http://localhost:9000/.netlify/functions/server/api/rolex
+http://localhost:9000/.netlify/functions/server/api/roles
 
 ### GET ALL (categories)
 http://localhost:9000/.netlify/functions/server/api/categories
