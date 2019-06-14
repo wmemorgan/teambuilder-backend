@@ -1,4 +1,4 @@
-// require('dotenv').load()
+require('dotenv').config()
 const express = require('express')
 const Router = require('express-promise-router')
 const serverless = require('serverless-http')
@@ -14,8 +14,7 @@ const login = require('../models/login')
 
 const app = express()
 const router = new Router()
-const token =
-  'esfeyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NUIhkufemQifQ';
+const token = process.env.JWT_SECRET
 
 app.use(bodyParser.json())
 app.use(cors())
