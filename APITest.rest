@@ -1,0 +1,41 @@
+### API Server test
+### GET ALL (projects)
+http://localhost:9000/.netlify/functions/server/api/projects
+
+### GET ALL (users)
+http://localhost:9000/.netlify/functions/server/api/users
+
+### GET ALL (roles)
+http://localhost:9000/.netlify/functions/server/api/rolex
+
+### GET ALL (categories)
+http://localhost:9000/.netlify/functions/server/api/categories
+
+### GET (by id)
+http://localhost:9000/.netlify/functions/server/api/projects/2
+
+### POST
+POST http://localhost:9000/.netlify/functions/server/api/users HTTP/1.1
+content-type: application/json
+
+{
+ "firstName": "Harry",
+ "email": "hpotter@hogwarts.edu"
+}
+
+
+### PUT
+PUT http://localhost:9000/.netlify/functions/server/api/users/4 HTTP/1.1
+content-type: application/json
+
+{
+  "firstName": "George",
+  "lastName": "Kaplan",
+  "email": "george@gmail.com",
+  "cohort": "WEBPT4",
+  "project_manager": "Anthony"
+}
+
+
+### DELETE
+DELETE http://localhost:9000/.netlify/functions/server/api/projects/2
