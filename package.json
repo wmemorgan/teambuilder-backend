@@ -34,7 +34,6 @@
     "start:lambda": "netlify-lambda serve api -t 20",
     "prod": "yarn build:lambda",
     "dev": "nodemon api/server.js",
-    "build:app": "cd client && yarn install && yarn build",
     "build:lambda": "netlify-lambda build api"
   }
 }
